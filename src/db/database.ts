@@ -84,6 +84,21 @@ class MoneyDatabase extends Dexie {
         }
       }
     })
+    this.version(7).stores({ records: '++id, type, categoryId, date, [date+type], [date+categoryId], createdAt', categories: '++id, [type+sort], [parentId+sort], type, parentId, sort', settings: 'key', dailyExpenses: 'date' }).upgrade(async transaction => {
+      const categories = transaction.table('categories')
+      const roots = await categories.toCollection().filter((category: Category) => !category.parentId).toArray() as Category[]
+      const now = Date.now()
+      for (const [sort, definition] of expenseDefaults.entries()) {
+        if (!roots.some(category => category.type === 'expense' && category.name === definition.name)) {
+          await categories.add({ name: definition.name, icon: definition.icon, type: 'expense', sort, createdAt: now })
+        }
+      }
+      for (const [sort, definition] of incomeDefaults.entries()) {
+        if (!roots.some(category => category.type === 'income' && category.name === definition.name)) {
+          await categories.add({ name: definition.name, icon: definition.icon, type: 'income', sort, createdAt: now })
+        }
+      }
+    })
   }
 }
 export const db = new MoneyDatabase()

@@ -4,9 +4,12 @@ export const expenseDefaults = [
   { name: '购物', icon: '🛍️', children: [{ name: '日用品', icon: '🧻' }, { name: '服饰', icon: '👕' }, { name: '数码', icon: '💻' }, { name: '美妆', icon: '💄' }, { name: '礼物', icon: '🎁' }] },
   { name: '娱乐', icon: '🎮', children: [{ name: '电影', icon: '🎬' }, { name: '游戏', icon: '🎮' }, { name: '旅行', icon: '✈️' }, { name: '运动', icon: '⚽' }, { name: '会员', icon: '🎫' }] },
   { name: '医疗', icon: '💊', children: [{ name: '挂号', icon: '🏥' }, { name: '药品', icon: '💊' }, { name: '检查', icon: '🩺' }, { name: '保健', icon: '🧘' }] },
+  { name: '居家', icon: '🏠', children: [] },
+  { name: '宠物', icon: '🐾', children: [] },
 ] as const
 
 export const incomeDefaults = [
   { name: '工资', icon: '💰' },
   { name: '礼金', icon: '🧧' },
+  { name: '其他收入', icon: '💵' },
 ] as const
