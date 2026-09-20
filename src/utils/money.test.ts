@@ -1,0 +1,1 @@
+import { describe, expect, it } from 'vitest'; import { formatMoney, parseMoney } from './money'; describe('money',()=>{it('uses exact cents',()=>{expect(parseMoney('12.34')).toBe(1234);expect(parseMoney('0.001')).toBeNull();expect(formatMoney(1234)).toBe('¥12.34')})})

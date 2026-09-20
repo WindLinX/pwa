@@ -1,0 +1,1 @@
+import { describe, expect, it } from 'vitest'; import { validateBackup } from './backupService'; describe('backup validation',()=>it('validates required structure',()=>{expect(validateBackup({schemaVersion:1,appVersion:'1',exportTime:'x',records:[],categories:[],settings:[]})).toBe(true);expect(validateBackup({schemaVersion:2})).toBe(false)}))

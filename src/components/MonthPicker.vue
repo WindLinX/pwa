@@ -1,0 +1,2 @@
+<script setup lang="ts">import { computed } from 'vue'; import { monthLabel, shiftMonth } from '@/utils/date'; const props = defineProps<{ modelValue: string }>(); const emit = defineEmits<{ 'update:modelValue': [value: string] }>(); const label = computed(() => monthLabel(props.modelValue)); function move(n: number) { emit('update:modelValue', shiftMonth(props.modelValue, n)) }</script>
+<template><div class="month-picker"><button @click="move(-1)" aria-label="上个月">‹</button><strong>{{ label }}</strong><button @click="move(1)" aria-label="下个月">›</button></div></template>

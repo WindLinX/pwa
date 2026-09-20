@@ -1,0 +1,38 @@
+{
+  "name": "pocket-ledger",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "@vitejs/plugin-vue": "latest",
+    "dexie": "latest",
+    "echarts": "latest",
+    "pinia": "latest",
+    "vite": "latest",
+    "vite-plugin-pwa": "latest",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@types/node": "latest",
+    "@vitest/coverage-v8": "latest",
+    "@vue/tsconfig": "latest",
+    "eslint": "latest",
+    "eslint-plugin-vue": "latest",
+    "fake-indexeddb": "latest",
+    "globals": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest",
+    "vitest": "latest",
+    "vue-tsc": "latest"
+  }
+}

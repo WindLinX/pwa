@@ -1,0 +1,4 @@
+import type { Category } from '@/types'
+import { db } from './database'
+import { expenseDefaults, incomeDefaults } from './defaultCategories'
+export async function seedDatabase() { if (await db.categories.count()) return; const now = Date.now(); await db.transaction('rw', db.categories, db.settings, async () => { const expenseIds = await db.categories.bulkAdd(expenseDefaults.map(({ name, icon }, sort): Category => ({ name, icon, type: 'expense', sort, createdAt: now })), { allKeys: true }) as number[]; await db.categories.bulkAdd(expenseDefaults.flatMap(({ children }, index) => children.map(({ name, icon }, sort): Category => ({ name, icon, type: 'expense', parentId: expenseIds[index], sort, createdAt: now })))); await db.categories.bulkAdd(incomeDefaults.map(({ name, icon }, sort): Category => ({ name, icon, type: 'income', sort, createdAt: now }))); await db.settings.bulkPut([{ key: 'theme', value: 'light' }, { key: 'defaultType', value: 'expense' }]) }) }

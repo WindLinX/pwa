@@ -1,0 +1,2 @@
+import { db } from '@/db/database'
+export const settingsService = { async get(key: string, fallback = '') { return (await db.settings.get(key))?.value ?? fallback }, set(key: string, value: string) { return db.settings.put({ key, value }) }, all() { return db.settings.toArray() }, async clearAll() { await db.transaction('rw', db.records, db.categories, db.settings, () => Promise.all([db.records.clear(), db.categories.clear(), db.settings.clear()])) } }
