@@ -21,6 +21,7 @@ const amountError = ref('')
 const isEdit = computed(() => !!route.params.id)
 const primaryCategory = computed(() => { const selected = categories.value.find(category => category.id === categoryId.value); return selected?.parentId ? categories.value.find(category => category.id === selected.parentId) : selected })
 const childCategories = computed(() => primaryCategory.value ? categories.value.filter(category => category.parentId === primaryCategory.value?.id) : [])
+const dateLabel = computed(() => { const [year, month, day] = date.value.split('-'); return `${year}年${Number(month)}月${Number(day)}日` })
 
 async function loadCategories() {
   const selectedType = type.value
@@ -83,6 +84,6 @@ onMounted(load)
     <p v-if="amountError" class="form-error">{{ amountError }}</p>
   </section>
   <section v-if="childCategories.length" class="form-block"><label>{{ primaryCategory?.icon }} {{ primaryCategory?.name }} <small>可选细分</small></label><div class="category-grid"><button v-for="c in childCategories" :key="c.id" :class="{ selected: categoryId === c.id }" @click="categoryId = c.id"><i>{{ c.icon }}</i>{{ c.name }}</button></div></section>
-  <section class="form-block fields"><label>日期<input v-model="date" type="date" /></label><label>备注<input v-model="remark" maxlength="100" placeholder="可选" /></label></section>
+  <section class="form-block fields"><label>日期<span class="date-field"><span>{{ dateLabel }}</span><input v-model="date" type="date" aria-label="日期" /></span></label><label>备注<input v-model="remark" maxlength="100" placeholder="可选" /></label></section>
   <button class="primary save" :disabled="saving" @click="submit">{{ saving ? '保存中…' : '保存账单' }}</button>
 </template>

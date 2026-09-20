@@ -58,3 +58,6 @@ npm run build
 ```
 
 对于影响交互、布局、PWA 安装或 IndexedDB 数据的改动，除静态检查外还应在浏览器中手动验证。生产部署必须使用 HTTPS（localhost 除外），否则 Service Worker 无法注册。
+## 发布版本
+
+- 每次功能或代码改动均须将 src/version.ts 中的 APP_VERSION 按 0.01 递增，并同步更新设置页展示；该值用于确认线上部署版本。

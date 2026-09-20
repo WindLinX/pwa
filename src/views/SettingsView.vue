@@ -7,6 +7,7 @@ import { budgetService, type BudgetStatus } from '@/services/budgetService'
 import { settingsService } from '@/services/settingsService'
 import type { BackupFile } from '@/types'
 import { localDate } from '@/utils/date'
+import { APP_VERSION } from '@/version'
 import { formatMoney, parseMoney } from '@/utils/money'
 
 const app = useAppStore()
@@ -44,6 +45,6 @@ onMounted(load)
   <section class="setting-group"><h2>外观</h2><label class="setting-row">深色模式<select :value="app.theme" @change="app.setTheme(($event.target as HTMLSelectElement).value)"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label></section>
   <section class="setting-group"><h2>记账设置</h2><div class="setting-row"><span>每日花销额度<small>{{ budgetSummary }}</small></span><button @click="openBudgetDialog">设置</button></div><button class="setting-row setting-link" @click="router.push('/category-settings')"><span>分类设置<small>管理收支分类和子分类</small></span><b aria-hidden="true">›</b></button></section>
   <section class="setting-group"><h2>数据备份</h2><div class="setting-row"><span>上次备份<small>{{ lastBackup }}</small></span><button @click="backupService.download().then(load)">立即备份</button></div><label class="setting-row">恢复备份<input type="file" accept="application/json,.json" @change="restore" /></label><button class="danger-row" @click="clear">清空全部数据</button></section>
-  <p class="about">随手记 1.0.0<br/>本地优先，所有数据仅保存在此设备浏览器中。</p>
+  <p class="about">随手记 v{{ APP_VERSION }}<br/>本地优先，所有数据仅保存在此设备浏览器中。</p>
   <Teleport to="body"><div v-if="budgetDialogOpen" class="amount-dialog-backdrop" @click.self="budgetDialogOpen = false"><section class="amount-dialog" role="dialog" aria-modal="true" aria-labelledby="budget-dialog-title"><header><div><p>每日花销额度</p><h2 id="budget-dialog-title">设置每天的预算</h2></div><button type="button" aria-label="关闭" @click="budgetDialogOpen = false">关闭</button></header><label class="dialog-amount amount-input"><b>¥</b><input v-model="budgetAmountText" type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="0.00" aria-label="每日花销额度" /></label><p v-if="budgetError" class="form-error">{{ budgetError }}</p><p v-else class="dialog-hint">额度在本月内累计，下月重新计算</p><footer><button type="button" class="dialog-cancel" @click="budgetDialogOpen = false">取消</button><button type="button" class="primary" @click="saveBudget">保存额度</button></footer></section></div></Teleport>
 </template>
