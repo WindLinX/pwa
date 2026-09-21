@@ -54,7 +54,7 @@ async function selectCell(cell: CalendarCell) {
   await load()
   dayGroupElements.value[cell.date]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
-function setDayGroupElement(date: string, element: Element | null) {
+function setDayGroupElement(date: string, element: unknown) {
   if (element instanceof HTMLElement) dayGroupElements.value[date] = element
   else delete dayGroupElements.value[date]
 }
