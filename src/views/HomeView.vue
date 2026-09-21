@@ -29,6 +29,7 @@ const monthlyBudgetStatus = computed(() => {
   if (period.value !== 'day' || !budget.value?.configured) return ''
   return budget.value.monthlyRemaining >= 0 ? `本月额度剩余 ${formatMoney(budget.value.monthlyRemaining)}` : `本月已超出 ${formatMoney(-budget.value.monthlyRemaining)}`
 })
+const isMonthlyBudgetExceeded = computed(() => (budget.value?.monthlyRemaining ?? 0) < 0)
 const categoryCards = (recordType: 'expense' | 'income') => computed(() => {
   const totals = new Map<number, number>()
   records.value.filter(record => record.type === recordType).forEach(record => totals.set(record.categoryId, (totals.get(record.categoryId) ?? 0) + record.amount))
@@ -63,7 +64,7 @@ onMounted(load)
 <template>
   <div class="home-view">
     <header class="home-head"><p>{{ periodTitle }}</p><div class="period-picker"><div class="segmented"><button :class="{ selected: period === 'day' }" @click="selectPeriod('day')">日</button><button :class="{ selected: period === 'month' }" @click="selectPeriod('month')">月</button><button :class="{ selected: period === 'year' }" @click="selectPeriod('year')">年</button></div><input v-model="periodValue" :type="period === 'day' ? 'date' : period === 'month' ? 'month' : 'number'" :min="period === 'year' ? '2000' : undefined" :max="period === 'year' ? '2100' : undefined" :aria-label="`${periodTitle}日期`" /></div></header>
-    <section class="balance-card"><div class="balance-heading"><span>{{ balanceTitle }}</span><small v-if="monthlyBudgetStatus">{{ monthlyBudgetStatus }}</small></div><b>{{ formatMoney(balance) }}</b><div class="balance-summary"><span>收入 <strong>{{ formatMoney(summary.income) }}</strong></span><span>支出 <strong>{{ formatMoney(summary.expense) }}</strong></span></div></section>
+    <section class="balance-card"><div class="balance-heading"><span>{{ balanceTitle }}</span><small v-if="monthlyBudgetStatus" :class="{ 'budget-exceeded': isMonthlyBudgetExceeded }">{{ monthlyBudgetStatus }}</small></div><b>{{ formatMoney(balance) }}</b><div class="balance-summary"><span>收入 <strong>{{ formatMoney(summary.income) }}</strong></span><span>支出 <strong>{{ formatMoney(summary.expense) }}</strong></span></div></section>
     <section class="section category-overview"><div class="section-title"><h2>支出</h2><span>选择分类开始记账</span></div><div class="category-expense-grid"><button v-for="item in expenseCards" :key="item.category.id" type="button" class="category-expense-card" :aria-label="`记录${item.category.name}`" @click="addRecordForCategory(item.category.id!)"><i>{{ item.category.icon }}</i><span>{{ item.category.name }}</span><strong>{{ formatMoney(item.amount) }}</strong></button></div></section>
     <section class="section category-overview"><div class="section-title"><h2>收入</h2><span>选择分类开始记账</span></div><div class="category-expense-grid"><button v-for="item in incomeCards" :key="item.category.id" type="button" class="category-expense-card income-card" :aria-label="`记录${item.category.name}`" @click="addRecordForCategory(item.category.id!)"><i>{{ item.category.icon }}</i><span>{{ item.category.name }}</span><strong>{{ formatMoney(item.amount) }}</strong></button></div></section>
   </div>
